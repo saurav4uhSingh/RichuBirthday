@@ -290,7 +290,7 @@ export default function PolaroidGallery() {
 
       {/* Main Grid Gallery (Polaroid Frames) */}
       <h3 className="text-center font-mono text-glow text-[11px] mb-8 leading-relaxed font-bold tracking-[0.1em] uppercase flex items-center justify-center gap-1.5 text-pink-300">
-        ✨ Double tap any polaroid below to unlock a sweet secret wish! 💖
+        ✨ Tap anywhere on cards to show love, or tap the photo directly to zoom! 💖
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto px-4">
@@ -308,7 +308,24 @@ export default function PolaroidGallery() {
           return (
             <div
               key={img.id}
-              onClick={() => handlePhotoTap(img.id)}
+              onClick={() => {
+                playPopSFX();
+                triggerBirthdayEffect("hearts");
+                
+                const messages = [
+                  "Richu, you make ordinary moments feel special! ✨",
+                  "Wishing you the happiest vibes today! Stay awesome 💖",
+                  "Friendship is a masterpiece, and you are its brightest star! 🌸",
+                  "Keep shining and let your brilliant energy light up the sky! 🧸"
+                ];
+                const randomMsg = messages[idx % messages.length];
+                setDoubleTapMsg({ id: img.id, text: randomMsg });
+
+                // Clear note bubble after 4.5 seconds
+                setTimeout(() => {
+                  setDoubleTapMsg(null);
+                }, 4500);
+              }}
               className={`relative bg-[#fbf9f4] p-4.5 pb-6 shadow-xl rounded-sm border border-[#e8e3d5] hover:scale-[1.04] hover:-rotate-1 hover:shadow-[0_0_30px_rgba(244,143,177,0.3)] hover:border-pink-300/40 transition-all duration-300 ease-out cursor-pointer group select-none flex flex-col justify-between ${rotationClass}`}
             >
               {/* Pin Accent */}
@@ -316,52 +333,59 @@ export default function PolaroidGallery() {
                 <div className="w-1.5 h-1.5 rounded-full bg-pink-600"></div>
               </div>
 
-              {/* Polaroid Image Wrapper */}
-              <div className="relative aspect-square w-full rounded-sm overflow-hidden bg-[#fafafa] border border-[#e8e4d3] group-hover:border-pink-300/40">
+              {/* Polaroid Image Wrapper with click-to-zoom for easy access on mobile */}
+              <div 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(idx);
+                  playChimeSFX();
+                  triggerBirthdayEffect("emoji-rain", undefined, undefined, "✨");
+                }}
+                className="relative aspect-square w-full rounded-sm overflow-hidden bg-[#fafafa] border border-[#e8e4d3] group-hover:border-pink-300/40"
+              >
                 <img
                   src={img.src}
                   alt={img.caption}
-                  className="w-full h-full object-cover transition duration-300 group-hover:brightness-105"
+                  className="w-full h-full object-cover transition duration-300 group-hover:brightness-105 pointer-events-none"
                   style={{ objectPosition: img.objectPosition || "center" }}
                   referrerPolicy="no-referrer"
                 />
-                
-                {/* Image Actions Overlay */}
-                <div className="absolute inset-0 bg-slate-900/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setLightboxIndex(idx);
-                      playChimeSFX();
-                      triggerBirthdayEffect("emoji-rain", undefined, undefined, "✨");
-                    }}
-                    className="w-10 h-10 rounded-full bg-white text-slate-900 flex items-center justify-center shadow hover:scale-115 transition"
-                    title="Zoom Photo"
-                  >
-                    <Eye className="w-4.5 h-4.5" />
-                  </button>
 
+                {/* Floating controls specifically built to be responsive and easy to tap on phones */}
+                <div className="absolute top-2 right-2 flex gap-1.5 z-10">
+                  {img.isUserUploaded && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteImage(img.id, e);
+                      }}
+                      className="w-8 h-8 rounded-full bg-red-100 hover:bg-red-500 text-red-600 hover:text-white flex items-center justify-center shadow-lg transition active:scale-90"
+                      title="Delete Photo"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="absolute top-2 left-2 flex gap-1.5 z-10">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       cycleImageCrop(img.id);
                       triggerBirthdayEffect("emoji-rain", undefined, undefined, "✂️");
                     }}
-                    className="w-10 h-10 rounded-full bg-white text-[#db2777] flex items-center justify-center shadow hover:scale-115 transition"
-                    title="Adjust Crop (Click to cycle Crop position)"
+                    className="w-8 h-8 rounded-full bg-white/90 hover:bg-white text-pink-650 text-pink-600 flex items-center justify-center shadow-lg transition active:scale-90"
+                    title="Adjust Crop"
                   >
-                    <Crop className="w-4.5 h-4.5" />
+                    <Crop className="w-4 h-4" />
                   </button>
+                </div>
 
-                  {img.isUserUploaded && (
-                    <button
-                      onClick={(e) => deleteImage(img.id, e)}
-                      className="w-10 h-10 rounded-full bg-red-100 hover:bg-red-500 hover:text-white text-red-600 flex items-center justify-center shadow hover:scale-115 transition"
-                      title="Delete Photo"
-                    >
-                      <Trash2 className="w-4.5 h-4.5" />
-                    </button>
-                  )}
+                {/* Always-visible Tap-to-Zoom layout indicator in lower corner */}
+                <div className="absolute bottom-2 right-2 z-10">
+                  <div className="w-8 h-8 rounded-full bg-white/90 text-slate-800 flex items-center justify-center shadow-lg transition group-hover:scale-110">
+                    <Eye className="w-4 h-4" />
+                  </div>
                 </div>
               </div>
 
@@ -377,11 +401,14 @@ export default function PolaroidGallery() {
                 </p>
                 <div className="flex items-center justify-between text-[10px] text-slate-500 font-mono mt-3 self-end w-full">
                   <span>{img.date || "Scrapbook"}</span>
-                  <Heart className="w-3 h-3 text-pink-400 hover:text-rose-500 transition group-hover:scale-120" />
+                  <div className="flex items-center gap-1">
+                    <span className="text-[9px] text-pink-400 font-mono font-bold animate-pulse">Tap Card 💌</span>
+                    <Heart className="w-3.5 h-3.5 text-pink-400 hover:text-rose-500 transition group-hover:scale-120 fill-pink-50" />
+                  </div>
                 </div>
               </div>
 
-              {/* Double Tap Secret Message Bubble */}
+              {/* Secret Message Bubble */}
               {doubleTapMsg && doubleTapMsg.id === img.id && (
                 <div className="absolute inset-x-2 -bottom-2 translate-y-full bg-gradient-to-r from-pink-500 to-rose-500 text-white p-3 rounded-2xl shadow-xl z-30 font-medium text-[11px] leading-relaxed text-center animate-in zoom-in-95 duration-150">
                   <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-pink-500"></div>
