@@ -424,50 +424,83 @@ export default function PolaroidGallery() {
       {lightboxIndex !== null && (
         <div 
           onClick={() => setLightboxIndex(null)}
-          className="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[90] flex flex-col items-center justify-center p-4 animate-fade-in"
+          className="fixed inset-0 bg-slate-950/98 backdrop-blur-2xl z-[999] flex flex-col items-center justify-between py-6 px-4 md:p-8 animate-fade-in animate-in duration-200 select-none"
         >
+          {/* Top Quick-Exit Bar for iPhone / Mobile */}
+          <div className="w-full max-w-lg flex justify-between items-center z-[1000] pb-2">
+            <span className="text-[11px] text-pink-300 font-mono tracking-wider uppercase font-bold text-glow">
+              Viewing Memory {lightboxIndex + 1} of {images.length}
+            </span>
+            <button
+              onClick={() => {
+                playPopSFX();
+                setLightboxIndex(null);
+              }}
+              className="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 active:bg-pink-600 active:text-white border border-white/20 text-white font-medium text-xs flex items-center gap-1.5 transition-all shadow-md active:scale-95 min-h-[44px]"
+            >
+              <span className="text-sm font-bold">✕</span> Go Back
+            </button>
+          </div>
+
           {/* Lightbox content container */}
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="flex flex-col max-w-3xl w-full text-center items-center relative animate-zoom-in"
+            className="flex-1 flex flex-col justify-center items-center w-full max-w-lg my-auto"
           >
-            <button
-              onClick={() => setLightboxIndex(null)}
-              className="absolute top-4 right-4 text-purple-300 hover:text-pink-400 font-bold text-lg cursor-pointer bg-white/5 w-9 h-9 rounded-full flex items-center justify-center transition"
-            >
-              ✕
-            </button>
-
             {/* Lightbox Image inside Polaroid styled thick frame */}
-            <div className="bg-[#fbf9f4] p-5 pb-12 rounded-sm shadow-2xl max-w-lg w-full transform rotate-1 border border-[#e1dac8]">
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-950 rounded-sm">
+            <div 
+              onClick={() => {
+                triggerBirthdayEffect("hearts");
+                playChimeSFX();
+              }}
+              className="bg-[#fbf9f4] p-4.5 pb-10 rounded-lg shadow-2xl w-full transform rotate-1 border border-[#e1dac8] cursor-pointer"
+            >
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-950 rounded-md">
                 <img
                   src={images[lightboxIndex].src}
                   alt={images[lightboxIndex].caption}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain pointer-events-none"
                   referrerPolicy="no-referrer"
                 />
               </div>
-              <div className="mt-5 text-center px-4">
-                <p className="text-slate-800 font-serif italic text-sm leading-relaxed">
+              <div className="mt-4 text-center px-2">
+                <p className="text-slate-800 font-serif italic text-xs md:text-sm leading-relaxed">
                   "{images[lightboxIndex].caption}"
                 </p>
-                <p className="text-[10px] text-pink-500 font-mono tracking-widest mt-3 uppercase font-bold text-glow">
+                <p className="text-[10px] text-pink-500 font-mono tracking-widest mt-2 uppercase font-bold text-glow">
                   🌿 {images[lightboxIndex].date || "Surprise Memory"} 🌿
                 </p>
               </div>
             </div>
+          </div>
 
-            {/* Quick action: rain confetti inside lightbox */}
-            <button
-              onClick={() => {
-                triggerBirthdayEffect("confetti", window.innerWidth / 2, window.innerHeight * 0.4);
-                triggerChimeRain();
-              }}
-              className="mt-8 px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-full shadow-lg shadow-pink-500/10 hover:scale-105 active:scale-95 transition"
-            >
-              Celebrate This Snapshot! 🎉
-            </button>
+          {/* Action buttons at bottom containing a direct click/touch back option & celebration */}
+          <div className="w-full max-w-lg flex flex-col gap-3 items-center z-[1000] pt-4">
+            <div className="flex gap-3 w-full">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  triggerBirthdayEffect("confetti", window.innerWidth / 2, window.innerHeight * 0.4);
+                  triggerChimeRain();
+                }}
+                className="flex-1 min-h-[46px] py-2.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-xl shadow-lg shadow-pink-500/10 hover:scale-102 active:scale-95 transition-all flex items-center justify-center gap-1.5"
+              >
+                🎉 Celebrate!
+              </button>
+
+              <button
+                onClick={() => {
+                  playPopSFX();
+                  setLightboxIndex(null);
+                }}
+                className="flex-1 min-h-[46px] py-2.5 bg-white/10 hover:bg-white/15 text-white text-xs font-bold rounded-xl border border-white/20 active:bg-red-500 transition-all flex items-center justify-center gap-1.5 active:scale-95"
+              >
+                ✕ Cut / Back 🚪
+              </button>
+            </div>
+            <p className="text-[10px] text-slate-400 font-mono text-center mb-1">
+              Tap anywhere outside or click either button to return
+            </p>
           </div>
         </div>
       )}
