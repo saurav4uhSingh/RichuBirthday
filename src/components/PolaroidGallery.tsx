@@ -408,10 +408,10 @@ export default function PolaroidGallery() {
                 </div>
               </div>
 
-              {/* Secret Message Bubble */}
+              {/* Secret Message Bubble (Shifted ABOVE the image card) */}
               {doubleTapMsg && doubleTapMsg.id === img.id && (
-                <div className="absolute inset-x-2 -bottom-2 translate-y-full bg-gradient-to-r from-pink-500 to-rose-500 text-white p-3 rounded-2xl shadow-xl z-30 font-medium text-[11px] leading-relaxed text-center animate-in zoom-in-95 duration-150">
-                  <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-pink-500"></div>
+                <div className="absolute inset-x-2 -top-4 -translate-y-full bg-gradient-to-r from-pink-500 to-rose-500 text-white p-3.5 rounded-2xl shadow-2xl z-30 font-semibold text-[11px] leading-relaxed text-center animate-in zoom-in-95 duration-150 border border-white/10">
+                  <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-rose-500 border-r border-b border-white/10"></div>
                   {doubleTapMsg.text}
                 </div>
               )}
@@ -424,10 +424,22 @@ export default function PolaroidGallery() {
       {lightboxIndex !== null && (
         <div 
           onClick={() => setLightboxIndex(null)}
-          className="fixed inset-0 bg-slate-950/98 backdrop-blur-2xl z-[999] flex flex-col items-center justify-between py-6 px-4 md:p-8 animate-fade-in animate-in duration-200 select-none"
+          className="fixed inset-0 bg-slate-950/98 backdrop-blur-2xl z-[999] flex flex-col items-center justify-between pt-16 pb-12 px-4 md:p-8 animate-fade-in animate-in duration-200 select-none overflow-y-auto"
         >
+          {/* Floating close button - Top right (iPhone safe area proof) */}
+          <button
+            onClick={() => {
+              playPopSFX();
+              setLightboxIndex(null);
+            }}
+            className="fixed top-4 right-4 md:top-6 md:right-6 z-[1005] w-12 h-12 rounded-full bg-white/10 hover:bg-pink-650 hover:bg-white/20 active:bg-pink-650 text-white border border-white/15 shadow-2xl flex items-center justify-center transition active:scale-90 min-h-[44px]"
+            title="Go Back"
+          >
+            ✕
+          </button>
+
           {/* Top Quick-Exit Bar for iPhone / Mobile */}
-          <div className="w-full max-w-lg flex justify-between items-center z-[1000] pb-2">
+          <div className="w-full max-w-lg flex justify-between items-center z-[1000] pb-2 shrink-0">
             <span className="text-[11px] text-pink-300 font-mono tracking-wider uppercase font-bold text-glow">
               Viewing Memory {lightboxIndex + 1} of {images.length}
             </span>
@@ -445,7 +457,7 @@ export default function PolaroidGallery() {
           {/* Lightbox content container */}
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="flex-1 flex flex-col justify-center items-center w-full max-w-lg my-auto"
+            className="w-full max-w-lg my-auto shrink-0 flex items-center justify-center p-1"
           >
             {/* Lightbox Image inside Polaroid styled thick frame */}
             <div 
@@ -453,7 +465,7 @@ export default function PolaroidGallery() {
                 triggerBirthdayEffect("hearts");
                 playChimeSFX();
               }}
-              className="bg-[#fbf9f4] p-4.5 pb-10 rounded-lg shadow-2xl w-full transform rotate-1 border border-[#e1dac8] cursor-pointer"
+              className="bg-[#fbf9f4] p-4 pb-8 rounded-lg shadow-2xl w-full transform rotate-1 border border-[#e1dac8] cursor-pointer"
             >
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-950 rounded-md">
                 <img
@@ -475,7 +487,7 @@ export default function PolaroidGallery() {
           </div>
 
           {/* Action buttons at bottom containing a direct click/touch back option & celebration */}
-          <div className="w-full max-w-lg flex flex-col gap-3 items-center z-[1000] pt-4">
+          <div className="w-full max-w-lg flex flex-col gap-3 items-center z-[1000] pt-6 shrink-0 pb-4">
             <div className="flex gap-3 w-full">
               <button
                 onClick={(e) => {
@@ -498,7 +510,7 @@ export default function PolaroidGallery() {
                 ✕ Cut / Back 🚪
               </button>
             </div>
-            <p className="text-[10px] text-slate-400 font-mono text-center mb-1">
+            <p className="text-[10px] text-slate-400 font-mono text-center">
               Tap anywhere outside or click either button to return
             </p>
           </div>
