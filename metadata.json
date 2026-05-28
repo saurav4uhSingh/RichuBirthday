@@ -1,0 +1,6 @@
+{
+  "name": "Happy Birthday Richa",
+  "description": "A beautiful, interactive surprise birthday website for Richa with polaroid memories, timeline, secret boxes, and animations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

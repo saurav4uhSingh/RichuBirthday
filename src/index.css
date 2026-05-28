@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Comfortaa", cursive, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #0f0514;
+    color: #f1ebd9;
+  }
+}
+
+/* Immersive Glassmorphism classes - Warm Glass with glowing neon outline */
+.glass-panel {
+  background: rgba(30, 15, 45, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 143, 177, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(15, 5, 20, 0.37);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 5, 20, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Luminous Glow System */
+.glow-pink {
+  box-shadow: 0 0 25px rgba(244, 143, 177, 0.45), inset 0 0 8px rgba(244, 143, 177, 0.15);
+}
+
+.glow-purple {
+  box-shadow: 0 0 25px rgba(139, 92, 246, 0.45), inset 0 0 8px rgba(139, 92, 246, 0.15);
+}
+
+.text-glow {
+  text-shadow: 0 0 12px rgba(244, 143, 177, 0.6);
+}
+
+/* Animations helpers */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-gentle-float {
+  animation: float 5s ease-in-out infinite;
+}
+
