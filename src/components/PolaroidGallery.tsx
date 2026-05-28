@@ -5,9 +5,67 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { UploadCloud, Trash2, Heart, Play, Square, ChevronLeft, ChevronRight, Eye, RefreshCw, Crop } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 import { MemoryImage } from "../types";
 import { triggerBirthdayEffect } from "./SpecialEffects";
 import { playChimeSFX, playPopSFX } from "./MusicPlayer";
+
+interface FloatingHeartProps {
+  left: string;
+  size: number;
+  duration: number;
+  delay: number;
+  rotateRange: number[];
+  xPath: number[];
+}
+
+const STATIC_HEARTS: FloatingHeartProps[] = [
+  { left: "10%", size: 14, duration: 4, delay: 0, rotateRange: [-15, 20], xPath: [0, -15, 10, -5] },
+  { left: "25%", size: 10, duration: 3.5, delay: 0.4, rotateRange: [10, -25], xPath: [0, 10, -10, 5] },
+  { left: "45%", size: 16, duration: 4.8, delay: 0.1, rotateRange: [-5, 15], xPath: [0, -8, 12, -8] },
+  { left: "65%", size: 12, duration: 3.2, delay: 0.6, rotateRange: [20, -10], xPath: [0, 15, -15, 0] },
+  { left: "85%", size: 15, duration: 4.5, delay: 0.2, rotateRange: [-25, 25], xPath: [0, -12, 15, -10] },
+];
+
+const FloatingHoverHearts = () => {
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      className="absolute inset-0 pointer-events-none overflow-visible z-20"
+    >
+      {STATIC_HEARTS.map((heart, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 10, x: 0, scale: 0.5, rotate: 0 }}
+          animate={{
+            opacity: [0, 0.9, 0.9, 0],
+            y: -140,
+            x: heart.xPath,
+            scale: [0.5, 1.1, 1, 0.6],
+            rotate: heart.rotateRange,
+          }}
+          transition={{
+            duration: heart.duration,
+            delay: heart.delay,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          className="absolute text-pink-500 drop-shadow-md select-none"
+          style={{
+            left: heart.left,
+            bottom: "0px",
+            fontSize: `${heart.size}px`,
+          }}
+        >
+          ❤️
+        </motion.div>
+      ))}
+    </motion.div>
+  );
+};
 
 // Images originally provided in workspace (reverted to original untouched set)
 const DEFAULT_MEMORIES: MemoryImage[] = [
@@ -44,6 +102,7 @@ export default function PolaroidGallery() {
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [isPlayingSlideshow, setIsPlayingSlideshow] = useState(false);
   const [doubleTapMsg, setDoubleTapMsg] = useState<{ id: string; text: string } | null>(null);
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const lastTapRef = useRef<{ [key: string]: number }>({});
   const uploadInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -308,6 +367,8 @@ export default function PolaroidGallery() {
           return (
             <div
               key={img.id}
+              onMouseEnter={() => setHoveredCardId(img.id)}
+              onMouseLeave={() => setHoveredCardId(null)}
               onClick={() => {
                 playPopSFX();
                 triggerBirthdayEffect("hearts");
@@ -415,6 +476,10 @@ export default function PolaroidGallery() {
                   {doubleTapMsg.text}
                 </div>
               )}
+
+              <AnimatePresence>
+                {hoveredCardId === img.id && <FloatingHoverHearts />}
+              </AnimatePresence>
             </div>
           );
         })}
