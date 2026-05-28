@@ -14,14 +14,14 @@ const DEFAULT_MEMORIES: MemoryImage[] = [
   {
     id: "default-1",
     src: "https://lh3.googleusercontent.com/d/1-S6-FnYH3wFB2xQo3RusQ7L5uxblmS83",
-    caption: "College ki pehli class se lekar aaj tak, tera har naya idea aur creative energy dekhna sabse amazing raha hai. Happy Birthday to my favorite partner-in-crime! Always stay as brilliant as you are! 🎓✨🎂",
-    date: "Batchmates to Besties 🎓"
+    caption: "Tum sach mein bahut special ho, Richu! Humesha aise hi haste muskurate rehna aur positive vibes bikherte rehna. Happy Birthday, superstar! 🥰🎂💖",
+    date: "Pyari Richu ke liye"
   },
   {
     id: "default-2",
     src: "https://lh3.googleusercontent.com/d/1fKGRTKCBrTKeMxKGOA742SRBJNMrJI5o",
-    caption: "Lectures bunk karna, exams se pehle raat-raat bhar baatein aur coffee/chai sessions! Tere saath harmless crazy bakbak aur college gossip ke bina har ek din bilkul adhoora hai. Keep spreading this fun, golden energy forever! ☕🤪🥳",
-    date: "Canteen & Chai ☕",
+    caption: "Kitni saari bakbak, crazy jokes aur endless coffee/chai sessions! Tere saath har ek moment ekdum priceless ban jata hai, keep sharing these golden smiles forever! ☕🤪✨",
+    date: "Dosti Ke Pal",
     objectPosition: "top"
   },
   {
@@ -50,7 +50,7 @@ export default function PolaroidGallery() {
   // Load from local storage or fallback to defaults
   useEffect(() => {
     try {
-      const stored = localStorage.getItem("richa_birthday_memories_v12");
+      const stored = localStorage.getItem("richa_birthday_memories_v13");
       if (stored) {
         setImages(JSON.parse(stored));
       } else {
@@ -65,7 +65,7 @@ export default function PolaroidGallery() {
   const saveImages = (newList: MemoryImage[]) => {
     setImages(newList);
     try {
-      localStorage.setItem("richa_birthday_memories_v12", JSON.stringify(newList));
+      localStorage.setItem("richa_birthday_memories_v13", JSON.stringify(newList));
     } catch (e) {
       alert("Local storage is full. Try deleting some photos first before adding!");
     }

@@ -10,15 +10,15 @@ import { triggerBirthdayEffect } from "./SpecialEffects";
 import { playChimeSFX, playPopSFX, playMagicSpellSFX } from "./MusicPlayer";
 
 const MOCK_QUOTES = [
-  "“You make ordinary moments feel special, Richu ✨”",
-  "“Stay happy, stay brilliant and shine brighter than the stars forever 🌸”",
-  "“Some people become beautiful, lifelong memories without trying 💖”",
-  "“In a sky full of clouds, you are the warmest, coziest rainbow 🌈✨”",
-  "“Your positive energy has the magical power to brighten up the darkest days! 🌟🌷”"
+  "“Tu ordinary dino ko bhi mast exciting dosti ke dinon mein badal deti hai, Richu! ✨”",
+  "“Stay happy, stay brilliant aur humesha chamakti rehna 🌸”",
+  "“Kuch log bina kuch extra try kiye hi dil ke sabse kareeb aur pakke dost ban jaate hain 💖”",
+  "“Exam syllabus kitna bhi tough ho, tere saath crash course karne mein hamesha alag hi maza aata hai! 📚✨”",
+  "“Teri positive energy se har boring lecture aur project work bhi ekdum light aur mazedaar lagne lagta hai! 🌟🌷”"
 ];
 
 const SECRET_MESSAGE = 
-  "Dear Richu, on this beautiful day, I want you to know how truly special and loved you are by everyone around you! 🌸 Your kindness, gentle heart, and stunning warmth bring massive joy to our team and friendships. May your confidence never dim, your goals be accomplished, and this new chapter usher in endless miracles, peaceful paths, and deep joy! Happy Birthday! 🎂✨💖";
+  "Oye Richu! Tujhe hum sab ki taraf se janamdin ki dher saari badhaiyan! 🎂✨ Tu college ki sabse pyaari, chill aur supportive dost hai. Tera supportive nature aur helpful spirit humari dosti ko sach mein bohot special aur solid banata hai. Bhagwan kare teri life ke saare goals ekdum shiddat se acheive ho jayein aur agla chapter dher saari khushiyan, unique opportunities aur deep peace lekar aaye! Happy Birthday to our brightest star! Keep rockin'! 🌸💖🥂";
 
 export default function SurpriseBoxes() {
   const [openedBox, setOpenedBox] = useState<{ [key: string]: boolean }>({});
@@ -110,7 +110,7 @@ export default function SurpriseBoxes() {
           {openedBox["message"] ? (
             <div className="mt-4 px-3 py-3.5 bg-gradient-to-br from-rose-900/30 to-purple-900/20 border border-rose-505/25 dark:border-rose-500/30 border-rose-500/20 rounded-2xl text-left animate-in slide-in-from-bottom-3 duration-300">
               <p className="text-pink-150 text-xs font-serif leading-relaxed italic text-center">
-                “Some souls are born to capture sunlight. Thank you for being the quiet, warm starlight that lights up our work, classes, and hearts! Stay bright, Richa! 🌟🌿”
+                “Kuch log dosti mein sach mein anmol hote hain. Thank you humari classes, projects aur group chats ko itna mazedaar aur bright banane ke liye! Stay bright, Richu! 🌟🌿”
               </p>
             </div>
           ) : (

@@ -28,6 +28,7 @@ import PolaroidGallery from "./components/PolaroidGallery";
 import Timeline from "./components/Timeline";
 import SurpriseBoxes from "./components/SurpriseBoxes";
 import Countdown from "./components/Countdown";
+import CakeCutting from "./components/CakeCutting";
 
 export default function App() {
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -270,6 +271,11 @@ export default function App() {
                   </h3>
                   <Countdown />
                 </div>
+              </section>
+
+              {/* ================= INTERACTIVE CAKE CUTTING CEREMONY ================= */}
+              <section className="px-4">
+                <CakeCutting />
               </section>
 
               {/* ================= PHOTO SCRAPBOOK MEMORY GALLERY ================= */}
